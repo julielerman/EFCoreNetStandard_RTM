@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SamuraiTracker.Domain
 {
-  public class Sword
+  public class SecretIdentity
   {
+   
     public int Id { get; set; }
-    public int WeightGrams { get; set; }
-    public int MakerId { get; set; }
-    public Maker Maker { get; set; }
-    public int SamuraId { get; set; }
+    public string RealName { get; set; }
+    public Samurai Samurai { get; set; }
+    public int SamuraiId { get; set; }
   }
 }

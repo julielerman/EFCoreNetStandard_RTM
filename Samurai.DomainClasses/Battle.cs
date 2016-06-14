@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System;
 
-namespace EF7Samurai.Domain
+namespace SamuraiTracker.Domain
 {
     public class Battle
     {

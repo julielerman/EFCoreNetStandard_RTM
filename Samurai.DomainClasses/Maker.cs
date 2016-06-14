@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-namespace EF7Samurai.Domain
+namespace SamuraiTracker.Domain
 {
   public class Maker
   {

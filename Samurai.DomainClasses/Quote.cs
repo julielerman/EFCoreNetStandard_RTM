@@ -1,4 +1,4 @@
-﻿namespace EF7Samurai.Domain
+﻿namespace SamuraiTracker.Domain
 {
     public class Quote
     {
@@ -6,7 +6,7 @@
         public string Text { get; set; }
       
      
-        public Samurai Samurai { get; set; }
+        //public Samurai Samurai { get; set; }
         public int SamuraiId { get; set; }
     }
 }

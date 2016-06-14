@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Samurai.DomainClasses")]
+[assembly: AssemblyProduct("netstandardintegrationtest")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c3a55f96-0da3-4e2a-acf0-4d00a0eb6d2f")]
+[assembly: Guid("e7793329-4bdd-4901-9402-b17c0e1d1fb7")]

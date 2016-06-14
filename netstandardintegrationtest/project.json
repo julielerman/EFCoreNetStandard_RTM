@@ -1,0 +1,48 @@
+﻿{
+    "version": "1.0.0-*",
+    "dependencies": {
+        "Microsoft.NETCore.Platforms": "1.0.1-rc2-24027",
+        "NETStandard.Library": "1.5.0-rc2-24027",
+
+        "Microsoft.EntityFrameworkCore.Relational.Specification.Tests": "1.0.0-rc2-final",
+        "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0-rc2-final",
+        "Microsoft.Extensions.Configuration.Json": "1.0.0-rc2-final",
+        "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0-rc2-final"
+
+    },
+    "publishOptions": {
+        "include": "**/*.sql",
+        "includeFiles": "config.json",
+        "exclude": [
+            "obj/**",
+            "bin/**"
+        ]
+    },
+    "testRunner": "xunit",
+    "frameworks": {
+        "netcoreapp1.0": {
+            "imports": [
+                "dnxcore50",
+                "portable-net45+win8"
+            ],
+            "dependencies": {
+                "Microsoft.NETCore.App": {
+                    "version": "1.0.0-rc2-3002702",
+                    "type": "platform"
+                },
+                "dotnet-test-xunit": "1.0.0-*"
+            }
+        },
+        "netstandard1.5": {
+            "dependencies": {
+
+                "EFCoreDbContext": "1.0.0-*"
+
+
+            },
+            "imports": [
+                "portable-net452+win81"
+            ]
+        }
+    }
+}

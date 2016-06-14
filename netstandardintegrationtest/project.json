@@ -2,9 +2,7 @@
     "version": "1.0.0-*",
     "dependencies": {
         "Microsoft.NETCore.Platforms": "1.0.1-rc2-24027",
-        "NETStandard.Library": "1.5.0-rc2-24027",
-
-        "Microsoft.EntityFrameworkCore.Relational.Specification.Tests": "1.0.0-rc2-final",
+          "Microsoft.EntityFrameworkCore.Relational.Specification.Tests": "1.0.0-rc2-final",
         "Microsoft.EntityFrameworkCore.SqlServer": "1.0.0-rc2-final",
         "Microsoft.Extensions.Configuration.Json": "1.0.0-rc2-final",
         "Microsoft.Extensions.Configuration.EnvironmentVariables": "1.0.0-rc2-final"
@@ -30,19 +28,24 @@
                     "version": "1.0.0-rc2-3002702",
                     "type": "platform"
                 },
+                "xunit": "2.1.0",
                 "dotnet-test-xunit": "1.0.0-*"
             }
         },
         "netstandard1.5": {
             "dependencies": {
+                "NETStandard.Library": {
+                    "type": "platform",
+                    "version": "1.5.0-rc2-24027"
+                },
 
-                "EFCoreDbContext": "1.0.0-*"
+                    "EFCoreDbContext": "1.0.0-*"
 
 
-            },
-            "imports": [
-                "portable-net452+win81"
-            ]
-        }
+                },
+                "imports": [
+                    "portable-net452+win8"
+                ]
+            }
     }
 }

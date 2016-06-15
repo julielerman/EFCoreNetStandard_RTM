@@ -39,6 +39,8 @@ namespace EFCoreDbContext
 
     public SamuraiContext() {
     }
-
-}
+    public SamuraiContext(bool useInMemory) {
+      _useInMemory = useInMemory;
+    }
+  }
 }

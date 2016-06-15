@@ -107,7 +107,7 @@ namespace TestProject
     [Fact]
     public void New_DbSetAdd_OneToOneIncludesDependentOnGraphs() {
       InstantiateSamurais();
-
+      //CANT THIS BE IN MEMORY WITHOUT SAVECHANGES?
       var secret = new SecretIdentity { RealName = "James Bond" };
       Samurai_GK.SecretIdentity = secret;
       using (var context = new SamuraiContext()) {
@@ -123,7 +123,7 @@ namespace TestProject
     //[ExpectedException(typeof(DbUpdateException))]
     public void New_DbSetAdd_ThrowsBecauseOneToOneDoesNotIncludePrincipalOnGraphs() {
       InstantiateSamurais();
-
+      //ACTUALLY SINCE ADD NO LONGER HAS THE DEPENDENTS/PRINCIPAL LOGIC THESE TESTS ARE MOOT (and above one)
       var secret = new SecretIdentity { RealName = "James Bond" };
       Samurai_GK.SecretIdentity = secret;
       using (var context = new SamuraiContext()) {

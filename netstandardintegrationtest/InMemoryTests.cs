@@ -1,6 +1,7 @@
 ﻿using EFCoreDbContext;
 using Microsoft.EntityFrameworkCore;
 using SamuraiTracker.Domain;
+using SamuraiTracker.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,9 +40,7 @@ namespace TestProject
 
     [Fact]
     public void StateViaAddWillOnlyBeAppliedToUnTrackedObjects() {
-      
       using (var context = new SamuraiContext(true)) {
-
         var maker = new Maker();
         context.Makers.Add(maker);
         context.SaveChanges();
@@ -52,14 +51,35 @@ namespace TestProject
         Assert.Equal(EntityState.Added, context.Entry(newSword).State);
 
         Assert.Equal(EntityState.Unchanged, context.Entry(maker).State);
-          }
-
-
+      }
     }
+
     [Fact]
     public void StateViaTrackGraphWillBeAppliedOnlyToUntrackedObjects() {
+      //Arrange
+      Samurai_KK.State = ObjectState.Unchanged;
+      var quote = new Quote();
+      quote.State = ObjectState.Added;
+      var sword = new Sword();
+      sword.State = ObjectState.Modified;
+      Samurai_KK.Quotes.Add(quote);
+      Samurai_KK.Swords.Add(sword);
+      //Act
       using (var context = new SamuraiContext(true)) {
 
+
+        context.ChangeTracker.TrackGraph(Samurai_KK, ChangeTrackerHelpers.ConvertStateOfNode);
+        var expected = new List<int> { 3, 2, 0 };
+        var addedCount = context.ChangeTracker.Entries().Count(e => e.State == EntityState.Added);
+        var modifiedCount = context.ChangeTracker.Entries().Count(e => e.State == EntityState.Modified);
+        var unchangedCount = context.ChangeTracker.Entries().Count(e => e.State == EntityState.Unchanged);
+        Assert.Equal(expected, new List<int> { addedCount, modifiedCount, unchangedCount });
+      }
+    }
+
+    [Fact]
+    public void CanReplaceObjectStateWithEntryState() {
+      using (var context = new SamuraiContext(true)) {
         var maker = new Maker();
         context.Makers.Add(maker);
         context.SaveChanges();
@@ -71,10 +91,7 @@ namespace TestProject
 
         Assert.Equal(EntityState.Unchanged, context.Entry(maker).State);
       }
-
-
     }
-
     [Fact]
     public void CanAddEntityToContext() {
       var samurai = new Samurai();

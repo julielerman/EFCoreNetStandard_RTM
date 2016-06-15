@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SamuraiTracker.Domain.Enums;
+using SamuraiTracker.Domain.Interfaces;
 
 namespace SamuraiTracker.Domain
 {
-  public class SecretIdentity
+  public class SecretIdentity : IObjectWithState
   {
-   
     public int Id { get; set; }
     public string RealName { get; set; }
     public Samurai Samurai { get; set; }
     public int SamuraiId { get; set; }
+    public ObjectState State { get; set; }
   }
 }

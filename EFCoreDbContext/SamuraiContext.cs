@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SamuraiTracker.Domain;
+using SamuraiTracker.Domain.Interfaces;
 
 namespace EFCoreDbContext
 {
@@ -19,6 +19,7 @@ namespace EFCoreDbContext
       modelBuilder.Entity<Maker>()
     .HasMany(m => m.Swords)
     .WithOne(s => s.Maker);
+      modelBuilder.Entity<IObjectWithState>(c => c.Ignore(p => p.State));
 
       //no longer need to specify the one to one betwee samurai & secret identity
       //efcore infers it and got it right
@@ -39,6 +40,7 @@ namespace EFCoreDbContext
 
     public SamuraiContext() {
     }
+
     public SamuraiContext(bool useInMemory) {
       _useInMemory = useInMemory;
     }

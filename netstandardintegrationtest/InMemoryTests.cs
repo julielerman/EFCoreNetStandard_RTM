@@ -53,9 +53,26 @@ namespace TestProject
         Assert.Equal(EntityState.Unchanged, context.Entry(maker).State);
       }
     }
-
     [Fact]
     public void StateViaTrackGraphWillBeAppliedOnlyToUntrackedObjects() {
+      using (var context = new SamuraiContext(true)) {
+
+        var maker = new Maker();
+        context.Makers.Add(maker);
+        context.SaveChanges();
+        //maker is now known and Unchanged
+        var newSword = new Sword();
+        newSword.Maker = maker;
+        context.ChangeTracker.TrackGraph(newSword, e => e.Entry.State = EntityState.Added);
+        Assert.Equal(EntityState.Added, context.Entry(newSword).State);
+
+        Assert.Equal(EntityState.Unchanged, context.Entry(maker).State);
+      }
+
+
+    }
+    [Fact]
+    public void CanApplyEntityStateViaChangeTracker() {
       //Arrange
       Samurai_KK.State = ObjectState.Unchanged;
       var quote = new Quote();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SamuraiTracker.Domain;
 
 namespace EFCoreDbContext
@@ -12,6 +13,7 @@ namespace EFCoreDbContext
     public DbSet<Maker> Makers { get; set; }
     public DbSet<Quote> Quotes { get; set; }
     public DbSet<SecretIdentity> Secrets { get; set; }
+    public DbSet<Sword> Swords { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
       modelBuilder.Entity<Maker>()
@@ -38,8 +40,5 @@ namespace EFCoreDbContext
     public SamuraiContext() {
     }
 
-    public SamuraiContext(bool useInMemory) {
-      _useInMemory = useInMemory;
-    }
-  }
+}
 }

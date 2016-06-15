@@ -1,14 +1,14 @@
-﻿using System;
-using SamuraiTracker.Domain;
-using EFCoreDbContext;
+﻿using EFCoreDbContext;
 using Microsoft.EntityFrameworkCore;
+using SamuraiTracker.Domain;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
 namespace TestProject
 {
-
-    public class InMemoryTests
+  public class InMemoryTests
 
   {
     [Fact]
@@ -20,7 +20,6 @@ namespace TestProject
         context.Samurais.AddRange(Samurai_KS, Samurai_S, Samurai_HH);
         context.SaveChanges();
         Assert.Equal(4, context.Samurais.Count());
-
       }
     }
 
@@ -37,22 +36,89 @@ namespace TestProject
         Assert.Equal(1, context.Quotes.Count());
       }
     }
+
+    [Fact]
+    public void StateViaAddWillOnlyBeAppliedToUnTrackedObjects() {
+      
+      using (var context = new SamuraiContext(true)) {
+
+        var maker = new Maker();
+        context.Makers.Add(maker);
+        context.SaveChanges();
+        //maker is now known and Unchanged
+        var newSword = new Sword();
+        newSword.Maker = maker;
+        context.Swords.Add(newSword);
+        Assert.Equal(EntityState.Added, context.Entry(newSword).State);
+
+        Assert.Equal(EntityState.Unchanged, context.Entry(maker).State);
+          }
+
+
+    }
+    [Fact]
+    public void StateViaTrackGraphWillBeAppliedOnlyToUntrackedObjects() {
+      using (var context = new SamuraiContext(true)) {
+
+        var maker = new Maker();
+        context.Makers.Add(maker);
+        context.SaveChanges();
+        //maker is now known and Unchanged
+        var newSword = new Sword();
+        newSword.Maker = maker;
+        context.ChangeTracker.TrackGraph(newSword, e => e.Entry.State = EntityState.Added);
+        Assert.Equal(EntityState.Added, context.Entry(newSword).State);
+
+        Assert.Equal(EntityState.Unchanged, context.Entry(maker).State);
+      }
+
+
+    }
+
+    [Fact]
+    public void CanAddEntityToContext() {
+      var samurai = new Samurai();
+      Assert.Equal(EntityState.Added, AddToSetEFCore(samurai));
+    }
+
+    private EntityState AddToSetEFCore(object entity) {
+      using (var context = new SamuraiContext()) {
+        context.Add(entity);
+        return context.Entry(entity).State;
+      }
+    }
+
+    [Fact]
+    public void CanAddRangeOfTypesToContext() {
+      var samurai = new Samurai();
+      var sword = new Sword();
+      var states = AddViaContext(new object[] { samurai, sword });
+      Assert.Equal(2, states.Count(i => i == EntityState.Added));
+    }
+
+    private EntityState[] AddViaContext(object[] entities) {
+      using (var context = new SamuraiContext()) {
+        context.AddRange(entities);
+        var _states = new List<EntityState>();
+        foreach (var item in context.ChangeTracker.Entries()) {
+          _states.Add(item.State);
+        }
+        return _states.ToArray();
+      }
+    }
+
     [Fact]
     public void New_DbSetUpdateSetsModified() {
       //Arrange
       InstantiateSamurais();
-            //Act
-     
+      //Act
+
       using (var context = new SamuraiContext(true)) {
         context.Samurais.Update(Samurai_KS);
-    
+
         Assert.Equal(EntityState.Modified, context.Entry(Samurai_KS).State);
-       
       }
-
-      
     }
-
 
     [Fact]
     public void BackwardsCompatible_BasicLinqQueryingStillWorks() {
@@ -74,13 +140,10 @@ namespace TestProject
         var samurai = context.Samurais.FirstOrDefault(s => s.Name.Contains("shi"));
 
         Assert.Equal(samurai.Name, "Heihachi Hayashida");
-
       }
     }
 
-  
-
-   [Fact]
+    [Fact]
     public void BackwardsCompatible_DbSetAddAndAddRangeOnGraphs() {
       InstantiateSamurais();
       Samurai_GK.Quotes.Add(new Quote { Text = "oh my!" });
@@ -92,6 +155,7 @@ namespace TestProject
         Assert.Equal(1, context.Quotes.Count());
       }
     }
+
     //[Fact]
     //public void New_DisconnectedPatterns_DbSetAdd_EnumToSpecifyRootOnly() {
     //  InstantiateSamurais();
@@ -129,21 +193,12 @@ namespace TestProject
         context.SaveChanges();
         Assert.Equal(1, context.Samurais.Count());
         Assert.Equal(0, context.Quotes.Count());
-
       }
     }
-   
-
-
-
-
-
-
 
     private void ResetContext(SamuraiContext context) {
       context.Database.EnsureDeleted();
       context.Database.EnsureCreated();
-     
     }
 
     private void InstantiateSamurais() {
@@ -156,16 +211,12 @@ namespace TestProject
       Samurai_GK = new Samurai { Name = "Gorōbei Katayama" };
     }
 
-    Samurai Samurai_KK;
-    Samurai Samurai_KS;
-    Samurai Samurai_S;
-    Samurai Samurai_KO;
-    Samurai Samurai_HH;
-    Samurai Samurai_KZ;
-    Samurai Samurai_GK;
+    private Samurai Samurai_KK;
+    private Samurai Samurai_KS;
+    private Samurai Samurai_S;
+    private Samurai Samurai_KO;
+    private Samurai Samurai_HH;
+    private Samurai Samurai_KZ;
+    private Samurai Samurai_GK;
   }
 }
-
-
-
-

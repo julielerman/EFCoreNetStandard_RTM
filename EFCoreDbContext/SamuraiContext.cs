@@ -19,7 +19,12 @@ namespace EFCoreDbContext
       modelBuilder.Entity<Maker>()
     .HasMany(m => m.Swords)
     .WithOne(s => s.Maker);
-      modelBuilder.Entity<IObjectWithState>(c => c.Ignore(p => p.State));
+      foreach (var entity in modelBuilder.Model.GetEntityTypes()) {
+      
+        modelBuilder.Entity(entity.Name).Ignore("State");
+      }
+     
+      
 
       //no longer need to specify the one to one betwee samurai & secret identity
       //efcore infers it and got it right

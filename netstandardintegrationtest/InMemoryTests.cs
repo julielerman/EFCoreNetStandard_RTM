@@ -72,21 +72,41 @@ namespace TestProject
 
     }
     [Fact]
+    public void NodeStateDoesntDoWhatYouMightThinkItDoes() {
+      //Arrange
+      var samurai = new Samurai();
+      samurai.Quotes.Add(new Quote());
+      samurai.Swords.Add(new Sword());
+      //Act
+      using (var context = new SamuraiContext(true)) {
+
+        
+        context.ChangeTracker.TrackGraph(samurai, e => e.NodeState = EntityState.Added);
+        var results = new List<object> { EntityState.Added, 3 };
+        Assert.Equal(results, new List<object> {context.Entry(samurai).State, context.ChangeTracker.Entries().Count() });
+        //this test will fail so that you will be sure to notice that only the samurai is listed in 
+        //Entries. It's state is detached and even though the sword and quote aren't listed in entries, their states are unchanged 
+      }
+    }
+
+   
+    [Fact]
     public void CanApplyEntityStateViaChangeTracker() {
       //Arrange
-      Samurai_KK.State = ObjectState.Unchanged;
+      var samurai = new Samurai();
+      samurai.State = ObjectState.Unchanged;
       var quote = new Quote();
       quote.State = ObjectState.Added;
       var sword = new Sword();
       sword.State = ObjectState.Modified;
-      Samurai_KK.Quotes.Add(quote);
-      Samurai_KK.Swords.Add(sword);
+      samurai.Quotes.Add(quote);
+      samurai.Swords.Add(sword);
       //Act
       using (var context = new SamuraiContext(true)) {
 
 
-        context.ChangeTracker.TrackGraph(Samurai_KK, ChangeTrackerHelpers.ConvertStateOfNode);
-        var expected = new List<int> { 3, 2, 0 };
+        context.ChangeTracker.TrackGraph(samurai, ChangeTrackerHelpers.ConvertStateOfNode);
+        var expected = new List<int> { 1, 1, 1 };
         var addedCount = context.ChangeTracker.Entries().Count(e => e.State == EntityState.Added);
         var modifiedCount = context.ChangeTracker.Entries().Count(e => e.State == EntityState.Modified);
         var unchangedCount = context.ChangeTracker.Entries().Count(e => e.State == EntityState.Unchanged);
@@ -94,21 +114,8 @@ namespace TestProject
       }
     }
 
-    [Fact]
-    public void CanReplaceObjectStateWithEntryState() {
-      using (var context = new SamuraiContext(true)) {
-        var maker = new Maker();
-        context.Makers.Add(maker);
-        context.SaveChanges();
-        //maker is now known and Unchanged
-        var newSword = new Sword();
-        newSword.Maker = maker;
-        context.ChangeTracker.TrackGraph(newSword, e => e.Entry.State = EntityState.Added);
-        Assert.Equal(EntityState.Added, context.Entry(newSword).State);
-
-        Assert.Equal(EntityState.Unchanged, context.Entry(maker).State);
-      }
-    }
+    
+  
     [Fact]
     public void CanAddEntityToContext() {
       var samurai = new Samurai();

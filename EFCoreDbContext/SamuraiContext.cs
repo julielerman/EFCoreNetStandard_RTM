@@ -6,7 +6,7 @@ namespace EFCoreDbContext
   public class SamuraiContext : DbContext
   {
     private bool _useInMemory;
-    private string _sqlConnection = "Server = (localdb)\\mssqllocaldb; Database=EF7SamuraiConsole; Trusted_Connection=True; MultipleActiveResultSets = True;";
+    private string _sqlConnection = "Server = (localdb)\\mssqllocaldb; Database=EFCoreSamuraiConsole; Trusted_Connection=True; MultipleActiveResultSets = True;";
 
     public DbSet<Samurai> Samurais { get; set; }
     public DbSet<Maker> Makers { get; set; }

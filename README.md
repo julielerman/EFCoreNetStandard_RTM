@@ -9,7 +9,9 @@ Migrations: working
 InMemory Tests: passing  
 Database Dependent: Tests passing  
 
-Of interest for now is getting the project.json sorted out for the EFCore project and the XUnit project. They are all working together now. Was tricky. In order to do the migrations, you have to point to an executable project because the EF Tools don't (yet) support class libraries. So in this solution, that's the exe project is the test project and that project needs to have a dependency on EntityFrameworkCore.Tools.
+**Of interest for now is getting the project.json sorted out for the EFCore project, migrations and the XUnit project to tests against the EF Core project.** 
+
+They are all working together now. Was tricky. In order to do the migrations, you have to point to an executable project because the EF Tools don't (yet) support class libraries. So in this solution, that's the exe project is the test project and that project needs to have a dependency on EntityFrameworkCore.Tools.
 
 I'm just starting in with the tests using some tests from earlier (in the EF7WhoAreYou repository) I created as my starting point. *Please keep in mind that I have not yet re-addressed the tests with respect to their relevancy to EF Core RTM.*
 

@@ -119,19 +119,7 @@ namespace TestProject
       }
     }
 
-    [Fact]
-    //[ExpectedException(typeof(DbUpdateException))]
-    public void New_DbSetAdd_ThrowsBecauseOneToOneDoesNotIncludePrincipalOnGraphs() {
-      InstantiateSamurais();
-      //ACTUALLY SINCE ADD NO LONGER HAS THE DEPENDENTS/PRINCIPAL LOGIC THESE TESTS ARE MOOT (and above one)
-      var secret = new SecretIdentity { RealName = "James Bond" };
-      Samurai_GK.SecretIdentity = secret;
-      using (var context = new SamuraiContext()) {
-        ResetContext(context);
-        context.Secrets.Add(secret); //, GraphBehavior.IncludeDependents);
-        context.SaveChanges();
-      }
-    }
+ 
 
     private void ResetContext(SamuraiContext context) {
       context.Database.EnsureDeleted();

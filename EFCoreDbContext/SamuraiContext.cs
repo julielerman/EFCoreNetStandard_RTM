@@ -14,6 +14,10 @@ namespace EFCoreDbContext
     public DbSet<SecretIdentity> Secrets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
+      foreach (var entity in modelBuilder.Model.GetEntityTypes()) {
+        modelBuilder.Entity(entity.Name).ToTable(entity.ClrType.Name + "s");
+      }
+      modelBuilder.Entity<SecretIdentity>().ToTable("Secrets");
       modelBuilder.Entity<Maker>()
     .HasMany(m => m.Swords)
     .WithOne(s => s.Maker);

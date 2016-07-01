@@ -3,7 +3,7 @@ using Xunit;
 
 namespace MyFirstDotNetCoreTests
 {
-  public class Class1
+  public class SimpleTest
   {
     [Fact]
     public void PassingTest() {
